@@ -69,6 +69,9 @@ def create_google_calendar_event(doctor, patient, slot):
 
 # --- VIEWS ---
 
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
 def signup(request):
     """View to register a new Doctor or Patient and trigger SIGNUP_WELCOME email."""
     if request.method == 'POST':
@@ -99,6 +102,7 @@ def signup(request):
     
     return HttpResponseBadRequest("Invalid request method.")
 
+@csrf_exempt
 @login_required
 def create_slot(request):
     """View for Doctors to create availability slots."""
@@ -137,6 +141,7 @@ def list_available_slots(request):
     
     return JsonResponse({'available_slots': list(slots)})
 
+@csrf_exempt
 @login_required
 def book_slot(request, slot_id):
     """View for Patients to book a slot. Contains Race Condition Protection."""
